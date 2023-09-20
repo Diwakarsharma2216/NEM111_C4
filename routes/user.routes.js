@@ -11,7 +11,7 @@ const userRouter=express.Router()
 
 userRouter.post("/register",async(req,res)=>{
     try {
-        const {name,email,gender,password,age,city,is_married }=req.body;
+        const {name,email,password }=req.body;
         const existingUser = await UserModel.findOne({email});
         if (existingUser) {
           return res.status(200).json({ error: 'User already exists. Please login.' });
@@ -20,7 +20,7 @@ userRouter.post("/register",async(req,res)=>{
             if(err){
                 res.status(200).json({ message:err});
             }else{
-                const user = new UserModel({ name,email,gender,password:hash,age,city,is_married, });
+                const user = new UserModel({ name,email,password:hash });
                 await user.save();
                 res.status(200).json({ message: 'User registered successfully',user});
             }
